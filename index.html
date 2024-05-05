@@ -4,10 +4,41 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Heart Attack Prediction</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmagic/2.0.8/ScrollMagic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmagic/2.0.8/plugins/debug.addIndicators.min.js"></script>
   </head>
   <body>
-    <div id="app"></div>
+    <header>
+      <h1>Global Heart Attack Risk Visualization</h1>
+    </header>
+    <div id="story-container">
+      <section class="step" data-step="1">
+        <h2>Introduction to Heart Health</h2>
+        <p>Explore how heart attack risks vary globally and understand the primary factors contributing to heart health.</p>
+      </section>
+      <section class="step" data-step="2" id="map-section">
+        <h2>Heart Attack Prevalence by Country</h2>
+        <div id="map"></div>
+      </section>
+      <section class="step" data-step="3">
+        <h2>Detailed Risk Factor Analysis</h2>
+        <p>This section will detail various risk factors such as cholesterol levels, diabetes, and lifestyle choices impacting heart health.</p>
+        <!-- Visualization of risk factors here -->
+      </section>
+      <section class="step" data-step="4">
+        <h2>Preventative Measures</h2>
+        <p>Discussion on how lifestyle changes and medical interventions can reduce the risk of heart attacks.</p>
+        <!-- Additional content or visualizations -->
+      </section>
+    </div>
+    <footer>
+      <p>Project by Elias Antony & Christoph Schrenk | © 2024</p>
+    </footer>
+
     <script type="module" src="/main.js"></script>
+    <script src="/scrollytelling.js"></script>
   </body>
 </html>
