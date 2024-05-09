@@ -11,22 +11,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmagic/2.0.8/plugins/debug.addIndicators.min.js"></script>
   </head>
   <body>
-    <header>
-      <h1>Global Heart Attack Risk Visualization</h1>
-    </header>
+    <section id="landing-page">
+      <div class="content">
+        <div class = "header">
+          <h2>Worldwide there are around</h2>
+          <span class="counter" id="heart-attack-count">0</span>
+          <h2>heart attacks per year</h2>
+        </div>
+          <p class="scroll-down">But what are the most common factors causing a heart attack?</p>
+      </div>
+      <div class="illustration">
+          <img src="landingPageImage.jpg" alt="Heart Attack Illustration">
+      </div>
+  </section>
     <div id="story-container">
-      <section class="step" data-step="1">
+      <section class="step">
         <h2>Introduction to Heart Health</h2>
         <p>Explore how heart attack risks vary globally and understand the primary factors contributing to heart health.</p>
       </section>
-      <section class="step" data-step="2" id="map-section">
+      <section class="step" id="map-section">
         <h2>Heart Attack Prevalence by Country</h2>
         <div id="map"></div>
       </section>
       <section class="step" data-step="3">
         <h2>Detailed Risk Factor Analysis</h2>
         <p>This section will detail various risk factors such as cholesterol levels, diabetes, and lifestyle choices impacting heart health.</p>
-        <!-- Visualization of risk factors here -->
+        <div id="risk-factors">
+          <div id="line-chart"></div>
+          <div id="scatterplot"></div>
+          <div id="bar-chart"></div>
+          <div id="area-chart"></div>
+        </div>
       </section>
       <section class="step" data-step="4">
         <h2>Preventative Measures</h2>
