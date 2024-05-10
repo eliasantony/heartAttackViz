@@ -1,59 +1,83 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Heart Attack Prediction</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmagic/2.0.8/ScrollMagic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmagic/2.0.8/plugins/debug.addIndicators.min.js"></script>
-  </head>
-  <body>
-    <section id="landing-page">
-      <div class="content">
-        <div class = "header">
-          <h2>Worldwide there are around</h2>
-          <span class="counter" id="heart-attack-count">0</span>
-          <h2>heart attacks per year</h2>
+</head>
+<body>
+    <section id="landing-page" data-scroll-section>
+        <div class="content">
+            <div class="header">
+                <h2>Worldwide there are around</h2>
+                <span class="counter" id="heart-attack-count">0</span>
+                <h2>heart attacks per year</h2>
+            </div>
+            <p class="scroll-down">But what are the most common factors causing a heart attack? <br> Scroll down to find out!</p>
         </div>
-          <p class="scroll-down">But what are the most common factors causing a heart attack?</p>
-      </div>
-      <div class="illustration">
-          <img src="landingPageImage.jpg" alt="Heart Attack Illustration">
-      </div>
-  </section>
-    <div id="story-container">
-      <section class="step">
+        <div class="illustration">
+            <img src="landingPageImage.jpg" alt="Heart Attack Illustration">
+        </div>
+    </section>
+    <section class="step" id="introduction" data-scroll-section>
         <h2>Introduction to Heart Health</h2>
-        <p>Explore how heart attack risks vary globally and understand the primary factors contributing to heart health.</p>
-      </section>
-      <section class="step" id="map-section">
+        <p>Heart attacks are among the leading causes of death worldwide, but did you know that their prevalence and severity can vary significantly from region to region? This variability is often influenced by a combination of genetic, environmental, and lifestyle factors.</p>
+        <p>In this section, we'll explore how geographic and socio-economic factors contribute to heart health, and we will look at data-driven insights into global trends. You'll learn about the primary factors that increase heart attack risks and how they differ across different populations.</p>
+        <p>Understanding these factors is the first step towards effective prevention and management of heart disease. Join us as we delve into the complexities of heart health on a global scale, supported by the latest research and data visualizations.</p>
+    </section>
+    <section class="step" id="map-section" data-scroll-section>
         <h2>Heart Attack Prevalence by Country</h2>
         <div id="map"></div>
-      </section>
-      <section class="step" data-step="3">
-        <h2>Detailed Risk Factor Analysis</h2>
-        <p>This section will detail various risk factors such as cholesterol levels, diabetes, and lifestyle choices impacting heart health.</p>
-        <div id="risk-factors">
-          <div id="line-chart"></div>
-          <div id="scatterplot"></div>
-          <div id="bar-chart"></div>
-          <div id="area-chart"></div>
-        </div>
-      </section>
-      <section class="step" data-step="4">
+    </section>
+    <section class="step chart-section" id="line-chart-section" data-scroll-section>
+      <div class="chart-text">
+        <h2>Line Chart</h2>
+        <p>Explanation and additional info about the Line Chart...</p>
+      </div>
+      <div class="chart" id="line-chart"></div>
+    </section>
+    <section class="step chart-section" id="scatterplot-section" data-scroll-section>
+      <div class="chart-text">
+        <h2>Scatterplot</h2>
+        <p>Explanation and additional info about the Scatterplot...</p>
+      </div>
+      <div class="chart" id="scatterplot"></div>
+    </section>
+    <section class="step chart-section" id="bar-chart-section" data-scroll-section>
+      <div class="chart-text">
+        <h2>Bar Chart</h2>
+        <p>Explanation and additional info about the Bar Chart...</p>
+      </div>
+      <div class="chart" id="bar-chart"></div>
+    </section>
+    <section class="step chart-section" id="area-chart-section" data-scroll-section>
+      <div class="chart-text">
+        <h2>Area Chart</h2>
+        <p>Explanation and additional info about the Area Chart...</p>
+      </div>
+      <div class="chart" id="area-chart"></div>
+    </section>
+    <section class="step" id="preventative-measures" data-scroll-section>
         <h2>Preventative Measures</h2>
         <p>Discussion on how lifestyle changes and medical interventions can reduce the risk of heart attacks.</p>
         <!-- Additional content or visualizations -->
-      </section>
-    </div>
+    </section>
+    <section class="step" id="conclusion" data-scroll-section>
+        <h2>Conclusion and Next Steps</h2>
+        <p>Summarizing the insights and encouraging further learning and proactive health measures.</p>
+    </section>
     <footer>
-      <p>Project by Elias Antony & Christoph Schrenk | © 2024</p>
+        <p>Project by Elias Antony & Christoph Schrenk | © 2024</p>
     </footer>
-
     <script type="module" src="/main.js"></script>
-    <script src="/scrollytelling.js"></script>
-  </body>
+    <script type="module" src="/scrollytelling.js"></script>
+</body>
 </html>

@@ -46,8 +46,6 @@ async function loadData() {
         }
     });
 
-    console.log(heartAttackData);
-
     let globe = new Globe(heartAttackData, {
         parentElement: '#map',
         width: 800,
@@ -58,7 +56,7 @@ async function loadData() {
 
     let lineChart = new LineChart(heartAttackData, {
         parentElement: '#line-chart',
-        width: 600,
+        width: 700,
         height: 400
     });
 
@@ -81,21 +79,27 @@ async function loadData() {
     });
 }
 
+function easeOutQuint(t) {
+    return 1 + (--t) * t * t * t * t;
+}
+
 // Function to animate counter
 function animateCounter(id, start, end, duration) {
     const element = document.getElementById(id);
     const range = end - start;
-    let current = start;
-    const stepTime = duration / range; // Determine time per step
-    const step = Math.ceil(range / (duration / 10)); // Increase step size for faster animation
+    let progress = 0;
+    const stepTime = 10; // 10ms per step
 
     const timer = setInterval(() => {
-        current += step;
-        if (current > end) {
-            current = end; // Cap to the max value
+        progress += stepTime / duration;
+        if (progress > 1) {
+            progress = 1;
         }
-        element.textContent = current.toLocaleString(); // Adds thousand separators
-        if (current === end) {
+
+        const current = start + range * easeOutQuint(progress);
+        element.textContent = Math.round(current).toLocaleString(); // Adds thousand separators
+
+        if (progress === 1) {
             clearInterval(timer);
         }
     }, stepTime);
@@ -103,7 +107,7 @@ function animateCounter(id, start, end, duration) {
 
 // Trigger counter animation when the page loads
 document.addEventListener('DOMContentLoaded', function () {
-    animateCounter('heart-attack-count', 0, 18000000, 5000);  // 1-second total duration
+    animateCounter('heart-attack-count', 0, 18000000, 5000);  // 5-second total duration
 });
 
 loadData();

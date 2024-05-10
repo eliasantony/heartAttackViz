@@ -1,89 +1,129 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
+html {
+  height: 100%; /* Ensures html is exactly the height of the viewport */
+  overflow-y: hidden; /* Prevents html from having a scroll bar */
+  scroll-behavior: smooth;
 }
 
-header, footer {
-  text-align: center;
-  padding: 10px;
-  background-color: #f4f4f4;
+body {
+  height: 100%; /* Matches the height of html */
+  overflow-y: scroll; /* Allows body to be the main scrollable area */
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  scroll-snap-type: y mandatory;
+  background: #fff;
+  color: #333;
 }
 
 main, #story-container {
-  margin: 20px;
+  overflow: hidden; /* Prevents these from becoming independently scrollable */
 }
 
-.section, .step {
-  margin-bottom: 40px;
+data-scroll-section{
+  scroll-snap-align: start;
 }
 
+/* .step {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+  box-sizing: border-box; 
+} */
+
+section{
+  min-height: 100vh;
+}
+
+#introduction, .step {
+  background: #ffffff; /* Consistent light background for readability */
+  padding: 60px 10%;
+  text-align: center;
+}
+
+.step h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #d82e2e; /* Accent color */
+}
+
+.step p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Map and visualization styling */
 #map {
   width: 100%;
-  max-width: 800px; /* Adjust based on your preference */
+  max-width: 800px;
   height: 500px;
   margin: auto;
 }
 
+/* Footer styling */
 footer p {
   color: #777;
 }
 
+/* Tooltip for visualizations */
 .tooltip {
   position: absolute;
-  text-align: center;
   width: 120px;
-  height: auto;
-  padding: 2px;
-  font: 12px sans-serif;
   background: white;
-  border: 0px;
   border-radius: 8px;
+  padding: 2px;
+  font-size: 12px;
+  text-align: center;
+  border: none;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s;
 }
 
 #landing-page {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 93%;
-    height: 100vh;
-    padding: 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  height: 100vh;
 }
 
-.content {
-    max-width: 50%;
-    font-size: 2rem;
-    color: #2a4878;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Aligns content to top and bottom */
-}
-
-.content h2 {
-    margin: 10px 0;
-    line-height: 1.3;
+.content, .illustration {
+  flex: 1; /* This gives both children equal width */
 }
 
 .counter {
-    font-weight: bold;
-    color: #d82e2e;
-    font-size: 4rem; /* Bigger size for emphasis */
-    line-height: 1; /* Ensures the counter fits nicely within the flow */
+  font-weight: bold;
+  color: #d82e2e;
+  font-size: 4rem;
 }
 
 .scroll-down {
-    font-size: 2rem;
-    /* font-weight: bold; */
-}
-
-.illustration {
-    max-width: 40%;
+  font-size: 2rem;
 }
 
 .illustration img {
-    width: 90%;
-    height: auto;
+  width: 80%;
+  height: auto;
+  float: right;
+}
+
+.chart-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-text {
+  width: 45%;
+  text-align: left;
+}
+
+.chart {
+  width: 45%;
+  padding-right: 5%;
 }
