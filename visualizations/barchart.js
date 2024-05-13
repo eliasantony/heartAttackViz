@@ -68,7 +68,7 @@ export default class BarChart {
             .attr('x', d => that.xScale(d.category))
             .attr('y', d => that.yScale(d.value))
             .attr('width', that.xScale.bandwidth())
-            .attr('height', d => that.boundedHeight - that.yScale(d.value))
+            .attr('length', d => that.boundedHeight - that.yScale(d.value))
             .attr('fill', that.config.colorScale);
 
         // Axes

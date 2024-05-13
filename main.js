@@ -60,11 +60,15 @@ async function loadData() {
         height: 400
     });
 
-    // let scatterPlot = new Scatterplot(heartAttackData, {
-    //     parentElement: '#scatter-plot',
-    //     width: 600,
-    //     height: 400
-    // });
+    let scatterPlot = new Scatterplot(heartAttackData, {
+        parentElement: '#scatterplot',
+        width: 600,
+        height: 400,
+        dataAccessor: {
+            x: 'BMI',
+            y: 'Heart Attack Risk',
+        }
+    });
 
     let barChart = new BarChart(heartAttackData, {
         parentElement: '#bar-chart',
