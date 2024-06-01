@@ -23,17 +23,6 @@ data-scroll-section{
   scroll-snap-align: start;
 }
 
-/* .step {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 40px 20px;
-  box-sizing: border-box; 
-} */
-
 section{
   min-height: 100vh;
 }
@@ -126,4 +115,45 @@ footer p {
 .chart {
   width: 45%;
   padding-right: 5%;
+}
+
+#calculator-section .form-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+#calculator-section .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+#calculator-section .form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+#calculator-section .form-group input,
+#calculator-section .form-group select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#calculator-section button[type="submit"] {
+  grid-column: span 2;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: white;
+  background-color: #f00;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#calculator-section button[type="submit"]:hover {
+  background-color: #d00;
 }

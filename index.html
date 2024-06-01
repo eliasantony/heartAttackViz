@@ -12,6 +12,7 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmagic/2.0.8/ScrollMagic.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmagic/2.0.8/plugins/debug.addIndicators.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 </head>
 <body>
     <section id="landing-page" data-scroll-section>
@@ -46,11 +47,18 @@
     </section>
     <section class="step chart-section" id="scatterplot-section" data-scroll-section>
       <div class="chart-text">
-        <h2>Scatterplot</h2>
-        <p>Explanation and additional info about the Scatterplot...</p>
+          <h2>Scatterplot</h2>
+          <p>This scatterplot shows the average heart attack risk for different BMI values.</p>
       </div>
       <div class="chart" id="scatterplot"></div>
-    </section>
+    </section> 
+    <section class="step chart-section" id="radar-chart-section" data-scroll-section>
+      <div class="chart-text">
+          <h2>Radar Chart</h2>
+          <p>This radar chart shows the average values for lifestyle factors such as smoking, alcohol consumption, and exercise hours per week. It provides a comparative view of these factors and their potential impact on heart attack risk.</p>
+      </div>
+      <div class="chart" id="radar-chart"></div>
+    </section>  
     <section class="step chart-section" id="bar-chart-section" data-scroll-section>
       <div class="chart-text">
         <h2>Bar Chart</h2>
@@ -65,6 +73,98 @@
       </div>
       <div class="chart" id="area-chart"></div>
     </section>
+    <section class="step chart-section" id="calculator-section" data-scroll-section>
+      <div class="chart-text">
+          <h2>Heart Attack Risk Calculator</h2>
+          <p>Enter your details below to calculate your heart attack risk:</p>
+          <div class="form-container">
+            <form id="risk-calculator">
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required placeholder="Years">
+                </div>
+                <div class="form-group">
+                    <label for="sex">Sex:</label>
+                    <select id="sex" name="sex" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bmi-category">BMI Category:</label>
+                    <select id="bmi-category" name="bmi-category" required>
+                        <option value="0">Underweight</option>
+                        <option value="1">Normal</option>
+                        <option value="2">Overweight</option>
+                        <option value="3">Obese</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="family-history">Family History of Heart Problems:</label>
+                    <select id="family-history" name="family-history" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="previous-heart-problems">Previous Heart Problems:</label>
+                    <select id="previous-heart-problems" name="previous-heart-problems" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="medication-use">Medication Use:</label>
+                    <select id="medication-use" name="medication-use" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="smoking">Smoking:</label>
+                    <select id="smoking" name="smoking" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="alcohol-consumption">Alcohol Consumption:</label>
+                    <input type="number" id="alcohol-consumption" name="alcohol-consumption" required placeholder="Units per week">
+                </div>
+                <div class="form-group">
+                    <label for="diet">Diet:</label>
+                    <select id="diet" name="diet" required>
+                        <option value="0">Poor</option>
+                        <option value="1">Average</option>
+                        <option value="2">Good</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exercise-hours">Exercise Hours Per Week:</label>
+                    <input type="number" id="exercise-hours" name="exercise-hours" required placeholder="Hours">
+                </div>
+                <div class="form-group">
+                    <label for="physical-activity-days">Physical Activity Days Per Week:</label>
+                    <input type="number" id="physical-activity-days" name="physical-activity-days" required placeholder="Days">
+                </div>
+                <div class="form-group">
+                    <label for="sleep-hours">Sleep Hours Per Day:</label>
+                    <input type="number" id="sleep-hours" name="sleep-hours" required placeholder="Hours">
+                </div>
+                <div class="form-group">
+                    <label for="stress-level">Stress Level:</label>
+                    <select id="stress-level" name="stress-level" required>
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+                <button type="submit">Calculate Risk</button>
+            </form>
+          </div>
+          <div id="risk-result"></div>
+      </div>
+    </section>    
     <section class="step" id="preventative-measures" data-scroll-section>
         <h2>Preventative Measures</h2>
         <p>Discussion on how lifestyle changes and medical interventions can reduce the risk of heart attacks.</p>

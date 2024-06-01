@@ -5,13 +5,28 @@ export default class BarChart {
         this.data = data;
         this.config = {
             parentElement: config?.parentElement || 'body',
-            colorScale: config?.colorScale,
+            colorScale: config?.colorScale || d3.scaleOrdinal(d3.schemeCategory10),
             width: config?.width || 500,
             height: config?.height || 500,
             margin: config?.margin || { top: 20, right: 20, bottom: 30, left: 40 },
             tooltipPadding: config?.tooltipPadding || 15
         };
+        this.prepareData();
         this.initViz();
+    }
+
+    prepareData() {
+        const that = this;
+
+        // Aggregate data by a category (for example, age categories)
+        const ageGroups = d3.group(that.data, d => d.ageCategory);
+        that.aggregatedData = Array.from(ageGroups, ([ageCategory, values]) => ({
+            ageCategory: ageCategory,
+            count: values.length
+        }));
+
+        // Sort data by age category
+        that.aggregatedData.sort((a, b) => a.ageCategory - b.ageCategory);
     }
 
     initViz() {
@@ -40,18 +55,23 @@ export default class BarChart {
         // Axes
         that.xAxisGroup = that.viz.append('g')
             .attr('transform', `translate(0, ${that.boundedHeight})`);
-        
+
         that.yAxisGroup = that.viz.append('g');
+
+        // Add tooltip container
+        that.tooltip = d3.select('body').append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0);
 
         that.updateViz();
     }
 
     updateViz() {
         const that = this;
-        
+
         // Update scales
-        that.xScale.domain(this.data.map(d => d.category));
-        that.yScale.domain([0, d3.max(this.data, d => d.value)]);
+        that.xScale.domain(that.aggregatedData.map(d => d.ageCategory));
+        that.yScale.domain([0, d3.max(that.aggregatedData, d => d.count)]);
 
         // Render the visualization
         that.renderViz();
@@ -61,18 +81,32 @@ export default class BarChart {
         const that = this;
 
         // Bars
-        that.viz.selectAll('.bar')
-            .data(that.data)
+        const bars = that.viz.selectAll('.bar')
+            .data(that.aggregatedData)
             .join('rect')
             .attr('class', 'bar')
-            .attr('x', d => that.xScale(d.category))
-            .attr('y', d => that.yScale(d.value))
+            .attr('x', d => that.xScale(d.ageCategory))
+            .attr('y', d => that.yScale(d.count))
             .attr('width', that.xScale.bandwidth())
-            .attr('length', d => that.boundedHeight - that.yScale(d.value))
+            .attr('height', d => that.boundedHeight - that.yScale(d.count))
             .attr('fill', that.config.colorScale);
 
         // Axes
         that.xAxisGroup.call(d3.axisBottom(that.xScale));
         that.yAxisGroup.call(d3.axisLeft(that.yScale));
+
+        // Add tooltips
+        bars.on('mouseover', (event, d) => {
+            that.tooltip.transition()
+                .duration(200)
+                .style('opacity', 0.9);
+            that.tooltip.html(`Age Category: ${d.ageCategory}<br>Count: ${d.count}`)
+                .style('left', `${event.pageX + that.config.tooltipPadding}px`)
+                .style('top', `${event.pageY - that.config.tooltipPadding}px`);
+        }).on('mouseleave', () => {
+            that.tooltip.transition()
+                .duration(500)
+                .style('opacity', 0);
+        });
     }
 }

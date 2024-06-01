@@ -10,11 +10,26 @@ export default class Scatterplot {
             height: config?.height || 500,
             margin: config?.margin || { top: 25, right: 25, bottom: 30, left: 30 },
             tooltipPadding: config?.tooltipPadding || 15,
-            xAxisLabel: config?.xAxisLabel || 'X-axis',
-            yAxisLabel: config?.yAxisLabel || 'Y-axis',
+            xAxisLabel: config?.xAxisLabel || 'BMI',
+            yAxisLabel: config?.yAxisLabel || 'Average Heart Attack Risk',
             dataAccessor: config.dataAccessor,
-        }
+        };
+        this.prepareData();
         this.initViz();
+    }
+
+    prepareData() {
+        const that = this;
+
+        // Group data by BMI (rounded to nearest integer for better grouping)
+        const bmiGroups = d3.group(that.data, d => Math.round(d.bmi));
+        that.aggregatedData = Array.from(bmiGroups, ([bmi, values]) => ({
+            bmi: bmi,
+            heartAttackRisk: d3.mean(values, v => v.heartAttackRisk)
+        }));
+
+        // Sort data by BMI to ensure proper line generation
+        that.aggregatedData.sort((a, b) => a.bmi - b.bmi);
     }
 
     initViz() {
@@ -25,12 +40,10 @@ export default class Scatterplot {
 
         // Initialize scales
         that.xScale = d3.scaleLinear()
-            // .domain() -- This is omitted for now as we set the Domain dynamically based on the filtered data
             .range([0, that.boundedWidth])
             .nice();
 
         that.yScale = d3.scaleLinear()
-            // .domain() -- This is omitted for now as we set the Domain dynamically based on the filtered data
             .range([that.boundedHeight, 0])
             .nice();
 
@@ -68,7 +81,7 @@ export default class Scatterplot {
         that.xAxisGroup.append('text')
             .attr('class', 'axis-title')
             .attr('x', that.boundedWidth + 10)
-            .attr('y', - 10)
+            .attr('y', -10)
             .style('text-anchor', 'end')
             .text(that.config.xAxisLabel);
 
@@ -78,20 +91,32 @@ export default class Scatterplot {
             .attr('y', -5)
             .text(that.config.yAxisLabel);
 
+        // Add tooltip container
+        that.tooltip = d3.select('body').append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0);
+
         // Update the visualization
         that.updateViz();
     }
 
-    
     updateViz() {
         const that = this;
-        
-        that.colorAccessor = d => d[that.config.dataAccessor.color];
-        that.xAccessor = d => d[that.config.dataAccessor.x];
-        that.yAccessor = d => d[that.config.dataAccessor.y];
 
-        that.xScale.domain([0, d3.max(that.data, that.xAccessor)]);
-        that.yScale.domain([0, d3.max(that.data, that.yAccessor)]);
+        that.colorAccessor = d => d[that.config.dataAccessor.color];
+        that.xAccessor = d => d.bmi;
+        that.yAccessor = d => d.heartAttackRisk;
+
+        // Log the aggregated data to ensure correct data access
+        console.log("Aggregated Data: ", that.aggregatedData);
+
+        // Set the domains for the scales based on data
+        that.xScale.domain(d3.extent(that.aggregatedData, that.xAccessor));
+        that.yScale.domain([0, 1]); // Heart attack risk is between 0 and 1
+
+        // Log the domains to ensure correct scale setup
+        console.log("X Scale Domain: ", that.xScale.domain());
+        console.log("Y Scale Domain: ", that.yScale.domain());
 
         // Trigger the visualization rendering
         that.renderViz();
@@ -102,15 +127,11 @@ export default class Scatterplot {
 
         // Add circles
         const circles = that.viz.selectAll('circle')
-            .data(that.data)
+            .data(that.aggregatedData)
             .join('circle')
             .attr('class', 'point')
             .attr('r', 4)
-            .attr('cx', d => that.xScale(that.xAccessor(d)));
-
-        circles.transition()
-            .duration(600)
-            .ease(d3.easeSinIn)
+            .attr('cx', d => that.xScale(that.xAccessor(d)))
             .attr('cy', d => that.yScale(that.yAccessor(d)))
             .attr('fill', d => that.config.colorScale(that.colorAccessor(d)));
 
@@ -125,13 +146,15 @@ export default class Scatterplot {
 
         // Add tooltips
         circles.on('mouseover', (event, d) => {
-            d3.select('#tooltip')
-                .style('opacity', 1)
-                .style('left', `${event.pageX + that.config.tooltipPadding} + px`)
-                .style('top', `${event.pageY + that.config.tooltipPadding} + px`)
-                .html('Text...')
+            that.tooltip.transition()
+                .duration(200)
+                .style('opacity', 0.9);
+            that.tooltip.html(`BMI: ${that.xAccessor(d)}<br>Heart Attack Risk: ${that.yAccessor(d).toFixed(2)}`)
+                .style('left', `${event.pageX + that.config.tooltipPadding}px`)
+                .style('top', `${event.pageY - that.config.tooltipPadding}px`);
         }).on('mouseleave', () => {
-            d3.select('#tooltip')
+            that.tooltip.transition()
+                .duration(500)
                 .style('opacity', 0);
         });
     }
