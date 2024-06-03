@@ -16,23 +16,22 @@ export default class LineChart {
     prepareData() {
         const that = this;
 
-        // Convert age and heart rate to numbers
+        // Convert age and heart attack risk to numbers
         that.data = that.data.map(d => ({
             age: +d.age,
-            heartRate: +d.heartRate
+            heartAttackRisk: +d.heartAttackRisk
         }));
-    
-        // Group data by age and calculate average heart rate per age
-        const ageGroups = d3.group(that.data, d => d.age); // Groups data by age
+
+        // Group data by age and calculate average heart attack risk per age
+        const ageGroups = d3.group(that.data, d => d.age);
         that.data = Array.from(ageGroups, ([age, values]) => ({
             age: age,
-            heartRate: d3.mean(values, v => v.heartRate) // Calculates average heart rate for each age group
+            heartAttackRisk: d3.mean(values, v => v.heartAttackRisk)
         }));
-    
+
         // Sort data by age to ensure proper line generation
         that.data.sort((a, b) => a.age - b.age);
     }
-    
 
     initViz() {
         const that = this;
@@ -62,7 +61,7 @@ export default class LineChart {
         const that = this;
 
         that.xScale.domain(d3.extent(that.data, d => d.age));
-        that.yScale.domain([0, d3.max(that.data, d => d.heartRate)]);
+        that.yScale.domain([0, d3.max(that.data, d => d.heartAttackRisk)]);
 
         that.renderViz();
     }
@@ -72,11 +71,11 @@ export default class LineChart {
 
         const lineGenerator = d3.line()
             .x(d => that.xScale(d.age))
-            .y(d => that.yScale(d.heartRate))
+            .y(d => that.yScale(d.heartAttackRisk))
             .curve(d3.curveMonotoneX);
 
         that.viz.selectAll('path')
-            .data([that.data])  // Ensure data is an array of one array
+            .data([that.data])
             .join('path')
             .attr('d', lineGenerator)
             .attr('fill', 'none')
@@ -84,8 +83,8 @@ export default class LineChart {
             .attr('stroke-width', 2);
 
         // Create axis labels
-        that.xAxisGroup.call(d3.axisBottom(that.xScale).tickFormat(d => `${d} years`)); // Label x-axis with years
-        that.yAxisGroup.call(d3.axisLeft(that.yScale).tickFormat(d => `${d} bpm`)); // Label y-axis with beats per minute
+        that.xAxisGroup.call(d3.axisBottom(that.xScale).tickFormat(d => `${d} years`));
+        that.yAxisGroup.call(d3.axisLeft(that.yScale).tickFormat(d => `${d}%`));
 
         // Optionally add labels to the axes
         that.viz.append("text")             
@@ -101,6 +100,6 @@ export default class LineChart {
             .attr("x",0 - (that.boundedHeight / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .text("Heart Rate (bpm)");
+            .text("Heart Attack Risk (%)");
     }
 }

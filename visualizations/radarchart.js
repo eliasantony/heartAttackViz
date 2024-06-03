@@ -45,6 +45,7 @@ export default class RadarChart {
             .domain([0, that.config.maxValue]);
 
         // Create the grid background
+        // Create the grid background
         that.axisGrid = that.svg.append("g").attr("class", "axisWrapper");
 
         // Draw the background circles
@@ -171,4 +172,3 @@ export default class RadarChart {
             .curve(d3.curveLinearClosed)(data);
     }
 }
-

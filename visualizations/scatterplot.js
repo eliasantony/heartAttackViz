@@ -11,7 +11,7 @@ export default class Scatterplot {
             margin: config?.margin || { top: 25, right: 25, bottom: 30, left: 30 },
             tooltipPadding: config?.tooltipPadding || 15,
             xAxisLabel: config?.xAxisLabel || 'BMI',
-            yAxisLabel: config?.yAxisLabel || 'Average Heart Attack Risk',
+            yAxisLabel: config?.yAxisLabel || 'Heart Attack Risk (%)',
             dataAccessor: config.dataAccessor,
         };
         this.prepareData();
@@ -112,7 +112,7 @@ export default class Scatterplot {
 
         // Set the domains for the scales based on data
         that.xScale.domain(d3.extent(that.aggregatedData, that.xAccessor));
-        that.yScale.domain([0, 1]); // Heart attack risk is between 0 and 1
+        that.yScale.domain([0, d3.max(that.aggregatedData, that.yAccessor)]);
 
         // Log the domains to ensure correct scale setup
         console.log("X Scale Domain: ", that.xScale.domain());
@@ -149,7 +149,7 @@ export default class Scatterplot {
             that.tooltip.transition()
                 .duration(200)
                 .style('opacity', 0.9);
-            that.tooltip.html(`BMI: ${that.xAccessor(d)}<br>Heart Attack Risk: ${that.yAccessor(d).toFixed(2)}`)
+            that.tooltip.html(`BMI: ${that.xAccessor(d)}<br>Heart Attack Risk: ${that.yAccessor(d).toFixed(2)}%`)
                 .style('left', `${event.pageX + that.config.tooltipPadding}px`)
                 .style('top', `${event.pageY - that.config.tooltipPadding}px`);
         }).on('mouseleave', () => {
@@ -159,3 +159,4 @@ export default class Scatterplot {
         });
     }
 }
+

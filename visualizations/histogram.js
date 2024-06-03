@@ -52,10 +52,10 @@ export default class Histogram {
         that.xScale.domain([0, d3.max(bins, d => d.x1)]);
         that.yScale.domain([0, d3.max(bins, d => d.length)]);
 
-        that.renderViz();
+        that.renderViz(bins);
     }
 
-    renderViz() {
+    renderViz(bins) {
         const that = this;
 
         // Bind the bins data
