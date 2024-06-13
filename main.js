@@ -58,7 +58,7 @@ async function loadData() {
     let lineChart = new LineChart(heartAttackData, {
         parentElement: '#line-chart',
         width: 700,
-        height: 400
+        height: 500
     });
 
     let scatterPlot = new Scatterplot(heartAttackData, {

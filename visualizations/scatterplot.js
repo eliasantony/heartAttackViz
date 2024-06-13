@@ -8,7 +8,7 @@ export default class Scatterplot {
             colorScale: config?.colorScale || d3.scaleOrdinal(d3.schemeCategory10),
             width: config?.width || 500,
             height: config?.height || 500,
-            margin: config?.margin || { top: 25, right: 25, bottom: 30, left: 30 },
+            margin: config?.margin || { top: 25, right: 25, bottom: 60, left: 60 },
             tooltipPadding: config?.tooltipPadding || 15,
             xAxisLabel: config?.xAxisLabel || 'BMI',
             yAxisLabel: config?.yAxisLabel || 'Heart Attack Risk (%)',
@@ -50,12 +50,14 @@ export default class Scatterplot {
         // Initialize the axes generators based on the scales
         that.xAxis = d3.axisBottom(that.xScale)
             .ticks(6)
-            .tickSizeOuter(-that.boundedHeight - 10)
-            .tickPadding(10);
+            .tickSizeOuter(0)
+            .tickPadding(10)
+            .tickFormat(d => `${d} kg/m²`);
         that.yAxis = d3.axisLeft(that.yScale)
             .ticks(6)
-            .tickSizeOuter(-that.boundedWidth - 10)
-            .tickPadding(10);
+            .tickSizeOuter(0)
+            .tickPadding(10)
+            .tickFormat(d => `${d}%`);
 
         // Static elements
         // Initialize SVG
@@ -80,15 +82,21 @@ export default class Scatterplot {
         // Add titles to the axes
         that.xAxisGroup.append('text')
             .attr('class', 'axis-title')
-            .attr('x', that.boundedWidth + 10)
-            .attr('y', -10)
-            .style('text-anchor', 'end')
+            .attr('x', that.boundedWidth / 2)
+            .attr('y', 40) // Adjusted position
+            .style('text-anchor', 'middle')
+            .style('font-size', '14px') // Ensure the font size is set
+            .style('fill', 'black') // Ensure the text color is set
             .text(that.config.xAxisLabel);
 
         that.yAxisGroup.append('text')
             .attr('class', 'axis-title')
-            .attr('x', 5)
-            .attr('y', -5)
+            .attr('transform', 'rotate(-90)')
+            .attr('x', -that.boundedHeight / 2)
+            .attr('y', -50) // Adjusted position
+            .style('text-anchor', 'middle')
+            .style('font-size', '14px') // Ensure the font size is set
+            .style('fill', 'black') // Ensure the text color is set
             .text(that.config.yAxisLabel);
 
         // Add tooltip container
@@ -107,16 +115,9 @@ export default class Scatterplot {
         that.xAccessor = d => d.bmi;
         that.yAccessor = d => d.heartAttackRisk;
 
-        // Log the aggregated data to ensure correct data access
-        console.log("Aggregated Data: ", that.aggregatedData);
-
         // Set the domains for the scales based on data
         that.xScale.domain(d3.extent(that.aggregatedData, that.xAccessor));
         that.yScale.domain([0, d3.max(that.aggregatedData, that.yAccessor)]);
-
-        // Log the domains to ensure correct scale setup
-        console.log("X Scale Domain: ", that.xScale.domain());
-        console.log("Y Scale Domain: ", that.yScale.domain());
 
         // Trigger the visualization rendering
         that.renderViz();
@@ -159,4 +160,3 @@ export default class Scatterplot {
         });
     }
 }
-

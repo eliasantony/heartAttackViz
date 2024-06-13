@@ -9,7 +9,7 @@ export default class RadarChart {
             height: config?.height || 500,
             levels: config?.levels || 5,
             maxValue: config?.maxValue || 1,
-            labelFactor: config?.labelFactor || 1.25,
+            labelFactor: config?.labelFactor || 0.9, // Adjusted label factor to bring labels closer
             wrapWidth: config?.wrapWidth || 60,
             opacityArea: config?.opacityArea || 0.35,
             dotRadius: config?.dotRadius || 4,
@@ -45,7 +45,6 @@ export default class RadarChart {
             .domain([0, that.config.maxValue]);
 
         // Create the grid background
-        // Create the grid background
         that.axisGrid = that.svg.append("g").attr("class", "axisWrapper");
 
         // Draw the background circles
@@ -66,13 +65,15 @@ export default class RadarChart {
             .each(function (d, i) {
                 const axis = d3.select(this);
                 const angle = i * that.angleSlice;
+                const x = that.rScale(that.config.maxValue) * Math.cos(angle - Math.PI / 2);
+                const y = that.rScale(that.config.maxValue) * Math.sin(angle - Math.PI / 2);
 
                 // Draw the lines
                 axis.append("line")
                     .attr("x1", 0)
                     .attr("y1", 0)
-                    .attr("x2", that.rScale(that.config.maxValue) * Math.cos(angle - Math.PI / 2))
-                    .attr("y2", that.rScale(that.config.maxValue) * Math.sin(angle - Math.PI / 2))
+                    .attr("x2", x)
+                    .attr("y2", y)
                     .attr("class", "line")
                     .style("stroke", "white")
                     .style("stroke-width", "2px");
@@ -85,7 +86,7 @@ export default class RadarChart {
                     .attr("dy", "0.35em")
                     .attr("x", that.rScale(that.config.maxValue * that.config.labelFactor) * Math.cos(angle - Math.PI / 2))
                     .attr("y", that.rScale(that.config.maxValue * that.config.labelFactor) * Math.sin(angle - Math.PI / 2))
-                    .text(d => d.axis)
+                    .text(d.axis)
                     .call(that.wrap, that.config.wrapWidth);
             });
 
@@ -143,13 +144,14 @@ export default class RadarChart {
         text.each(function () {
             const text = d3.select(this),
                 words = text.text().split(/\s+/).reverse(),
-                lineHeight = 1.4,
+                lineHeight = 1.4, // ems
                 y = text.attr("y"),
-                dy = parseFloat(text.attr("dy"));
+                x = text.attr("x"),
+                dy = parseFloat(text.attr("dy")) || 0;
             let word,
                 line = [],
                 lineNumber = 0,
-                tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+                tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
 
             while (word = words.pop()) {
                 line.push(word);
@@ -158,7 +160,7 @@ export default class RadarChart {
                     line.pop();
                     tspan.text(line.join(" "));
                     line = [word];
-                    tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
                 }
             }
         });
