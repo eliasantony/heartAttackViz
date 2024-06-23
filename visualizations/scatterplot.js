@@ -25,7 +25,7 @@ export default class Scatterplot {
         const bmiGroups = d3.group(that.data, d => Math.round(d.bmi));
         that.aggregatedData = Array.from(bmiGroups, ([bmi, values]) => ({
             bmi: bmi,
-            heartAttackRisk: d3.mean(values, v => v.heartAttackRisk)
+            heartAttackRisk: d3.mean(values, v => v.heartAttackRisk) * 100
         }));
 
         // Sort data by BMI to ensure proper line generation
@@ -64,7 +64,8 @@ export default class Scatterplot {
         that.svg = d3.select(that.config.parentElement)
             .append('svg')
             .attr('width', that.config.width)
-            .attr('height', that.config.height);
+            .attr('height', that.config.height)
+            .style("opacity", 0);
 
         // Create real drawing area
         that.viz = that.svg.append('g')

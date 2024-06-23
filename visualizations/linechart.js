@@ -7,7 +7,8 @@ export default class LineChart {
             parentElement: config?.parentElement || 'body',
             width: config?.width || 600,
             height: config?.height || 400,
-            margin: config?.margin || { top: 10, right: 30, bottom: 30, left: 60 }
+            margin: config?.margin || { top: 10, right: 30, bottom: 30, left: 60 },
+            tooltipPadding: config?.tooltipPadding || 15
         };
         this.prepareData();
         this.initViz();
@@ -26,7 +27,7 @@ export default class LineChart {
         const ageGroups = d3.group(that.data, d => d.age);
         that.data = Array.from(ageGroups, ([age, values]) => ({
             age: age,
-            heartAttackRisk: d3.mean(values, v => v.heartAttackRisk)
+            heartAttackRisk: d3.mean(values, v => v.heartAttackRisk) *100
         }));
 
         // Sort data by age to ensure proper line generation
@@ -42,7 +43,8 @@ export default class LineChart {
         that.svg = d3.select(that.config.parentElement)
             .append('svg')
             .attr('width', that.config.width)
-            .attr('height', that.config.height);
+            .attr('height', that.config.height)
+            .style("opacity", 0);
 
         that.viz = that.svg.append('g')
             .attr('transform', `translate(${that.config.margin.left}, ${that.config.margin.top})`);
@@ -53,6 +55,11 @@ export default class LineChart {
         that.xAxisGroup = that.viz.append('g')
             .attr('transform', `translate(0,${that.boundedHeight})`);
         that.yAxisGroup = that.viz.append('g');
+
+        // Add tooltip container
+        that.tooltip = d3.select('body').append('div')
+            .attr('class', 'tooltip')
+            .style('opacity', 0);
 
         that.updateViz();
     }
@@ -89,7 +96,7 @@ export default class LineChart {
         // Optionally add labels to the axes
         that.viz.append("text")             
             .attr("transform",
-                  "translate(" + (that.boundedWidth/2) + " ," + 
+                  "translate(" + (that.boundedWidth / 2) + " ," + 
                                  (that.boundedHeight + that.config.margin.top + 20) + ")")
             .style("text-anchor", "middle")
             .text("Age");
@@ -97,9 +104,60 @@ export default class LineChart {
         that.viz.append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - that.config.margin.left)
-            .attr("x",0 - (that.boundedHeight / 2))
+            .attr("x", 0 - (that.boundedHeight / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .text("Heart Attack Risk (%)");
+
+        // Add tooltips
+        that.viz.selectAll('circle')
+            .data(that.data)
+            .join('circle')
+            .attr('cx', d => that.xScale(d.age))
+            .attr('cy', d => that.yScale(d.heartAttackRisk))
+            .attr('r', 4)
+            .attr('fill', 'steelblue')
+            .on('mouseover', (event, d) => {
+                that.tooltip.transition()
+                    .duration(200)
+                    .style('opacity', 0.9);
+                that.tooltip.html(`Age: ${d.age}<br>Heart Attack Risk: ${d.heartAttackRisk.toFixed(2)}%`)
+                    .style('left', `${event.pageX + that.config.tooltipPadding}px`)
+                    .style('top', `${event.pageY - that.config.tooltipPadding}px`);
+            })
+            .on('mousemove', (event) => {
+                that.tooltip.style('left', `${event.pageX + that.config.tooltipPadding}px`)
+                    .style('top', `${event.pageY - that.config.tooltipPadding}px`);
+            })
+            .on('mouseleave', () => {
+                that.tooltip.transition()
+                    .duration(500)
+                    .style('opacity', 0);
+            });
+
+
+        // Step 1: Calculate slope (m) and y-intercept (b) for the trend line
+        const xMean = d3.mean(that.data, d => d.age);
+        const yMean = d3.mean(that.data, d => d.heartAttackRisk);
+        const numerator = d3.sum(that.data, d => (d.age - xMean) * (d.heartAttackRisk - yMean));
+        const denominator = d3.sum(that.data, d => (d.age - xMean) ** 2);
+        const m = numerator / denominator;
+        const b = yMean - m * xMean;
+
+        // Step 2: Find start and end points for the trend line
+        const xExtent = d3.extent(that.data, d => d.age);
+        const trendLineData = xExtent.map(x => ({
+            age: x,
+            heartAttackRisk: m * x + b
+        }));
+
+        // Step 3: Draw the trend line
+        that.viz.append('path')
+            .datum(trendLineData)
+            .attr('d', lineGenerator)
+            .attr('fill', 'none')
+            .attr('stroke', 'red') // Use a different color for the trend line
+            .attr('stroke-width', 1)
+            .attr('stroke-dasharray', '5,5'); // Optional: make the trend line dashed
     }
 }

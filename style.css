@@ -1,3 +1,37 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#introduction p {
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+}
+
+#introduction p:nth-child(2) {
+  animation-delay: 6s;
+}
+
+#introduction p:nth-child(3) {
+  animation-delay: 7s;
+}
+
+#introduction p:nth-child(4) {
+  animation-delay: 8s;
+}
+
+#map {
+  pointer-events: none;
+}
+
+#map svg, #map g {
+  pointer-events: auto;
+}
+
 html {
   height: 100%; /* Ensures html is exactly the height of the viewport */
   overflow-y: hidden; /* Prevents html from having a scroll bar */
@@ -19,15 +53,41 @@ main, #story-container {
   overflow: hidden; /* Prevents these from becoming independently scrollable */
 }
 
-data-scroll-section{
+[data-scroll-section] {
   scroll-snap-align: start;
 }
 
-section{
+section {
   min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#introduction, .step {
+#introduction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff; /* Consistent light background for readability */
+  padding: 60px 10%;
+  text-align: center;
+}
+
+#introduction h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #d82e2e; /* Accent color */
+}
+
+#introduction p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 10px 0;
+}
+
+.step {
   background: #ffffff; /* Consistent light background for readability */
   padding: 60px 10%;
   text-align: center;
@@ -46,17 +106,11 @@ section{
   margin: auto;
 }
 
-/* Map and visualization styling */
 #map {
   width: 100%;
   max-width: 800px;
   height: 500px;
   margin: auto;
-}
-
-/* Footer styling */
-footer p {
-  color: #777;
 }
 
 /* Tooltip for visualizations */
@@ -157,3 +211,167 @@ footer p {
 #calculator-section button[type="submit"]:hover {
   background-color: #d00;
 }
+
+.step svg {
+  transition: opacity 1s, transform 1s;
+  opacity: 0;
+  transform: translateX(100px);
+}
+
+.step.is-active svg {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#conclusion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff; /* Consistent light background for readability */
+  padding: 60px 10%;
+  text-align: center;
+}
+
+#conclusion h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #d82e2e; /* Accent color */
+}
+
+#conclusion p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 10px 0;
+}
+
+.measures-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.measure {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.measure-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.measure h3 {
+  font-size: 1.5rem;
+  color: #d82e2e;
+  margin-bottom: 10px;
+}
+
+.measure p {
+  font-size: 1rem;
+  color: #333333;
+}
+
+#preventative-measures {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff; /* Consistent light background for readability */
+  padding: 60px 10%;
+  text-align: center;
+}
+
+#preventative-measures h2 {
+  margin-bottom: 40px;
+  font-size: 2rem;
+  color: #d82e2e; /* Accent color */
+}
+
+#calculator-section .chart-text {
+  width: 100%;
+  text-align: center;
+}
+
+#calculator-section .form-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem; /* Reduced gap for less space between rows */
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+#calculator-section .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8rem; /* Reduced margin for less space between rows */
+}
+
+#calculator-section .form-group label {
+  margin-bottom: 0.3rem; /* Reduced margin for closer labels */
+  font-weight: bold;
+  text-align: left; /* Align labels to the left */
+}
+
+#calculator-section .form-group input,
+#calculator-section .form-group select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#calculator-section button[type="submit"] {
+  grid-column: span 2;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: white;
+  background-color: #f00;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem; /* Added margin for spacing from the input fields */
+}
+
+#calculator-section button[type="submit"]:hover {
+  background-color: #d00;
+}
+
+#risk-result-section {
+  display: none;
+  padding: 60px 10%;
+  text-align: center;
+  background: #ffffff;
+  height: 100vh; /* Ensure it takes up the full viewport height */
+  display: flex; /* Use Flexbox */
+  flex-direction: column; /* Ensure vertical alignment */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+}
+
+#risk-result-section h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #d82e2e; /* Accent color */
+}
+
+#risk-result-section p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 10px auto;
+}
+
+#risk-result-section.active {
+  display: flex; /* Change to flex for vertical alignment */
+}
+

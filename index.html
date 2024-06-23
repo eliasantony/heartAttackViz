@@ -35,145 +35,189 @@
         <p>Understanding these factors is the first step towards effective prevention and management of heart disease. Join us as we delve into the complexities of heart health on a global scale, supported by the latest research and data visualizations.</p>
     </section>
     <section class="step" id="map-section" data-scroll-section>
-        <h2>Heart Attack Prevalence by Country</h2>
+        <div class="chart-text">
+            <h2>Heart Attack Prevalence by Country</h2>
+            <p>Ever wondered which countries have the highest heart attack risks? This globe visualization shows you! Countries are colored based on their average heart attack risk, with darker shades indicating higher prevalence. Did you know that Nigeria, Russia, and Peru are among the top countries with the highest heart attack rates?</p>
+        </div>
         <div id="map"></div>
     </section>
+    <section class="step chart-section" id="bar-chart-section" data-scroll-section>
+        <div class="chart-text">
+            <h2>Bar Chart</h2>
+            <p>Check out the average heart attack risk across different age groups! This bar chart shows which age groups have higher risks. For instance, people aged 61 and above have the highest risk, while those aged 18-30 have the lowest. Age plays a crucial role in heart health.</p>
+        </div>
+        <div class="chart" id="bar-chart"></div>
+    </section>
     <section class="step chart-section" id="line-chart-section" data-scroll-section>
-      <div class="chart-text">
-        <h2>Line Chart</h2>
-        <p>Explanation and additional info about the Line Chart...</p>
-      </div>
-      <div class="chart" id="line-chart"></div>
+        <div class="chart-text">
+            <h2>Line Chart</h2>
+            <p>Watch how heart attack risk changes with age! This line chart plots age on the x-axis and heart attack risk on the y-axis. You can see the risk increasing steadily as people get older, with some fluctuations. Knowing your age-related risk can help you take preventive measures.</p>
+        </div>
+        <div class="chart" id="line-chart"></div>
     </section>
     <section class="step chart-section" id="scatterplot-section" data-scroll-section>
-      <div class="chart-text">
-          <h2>Scatterplot</h2>
-          <p>This scatterplot shows the average heart attack risk for different BMI values.</p>
-      </div>
-      <div class="chart" id="scatterplot"></div>
-    </section> 
-    <section class="step chart-section" id="radar-chart-section" data-scroll-section>
-      <div class="chart-text">
-          <h2>Radar Chart</h2>
-          <p>This radar chart shows the average values for lifestyle factors such as smoking, alcohol consumption, and exercise hours per week. It provides a comparative view of these factors and their potential impact on heart attack risk.</p>
-      </div>
-      <div class="chart" id="radar-chart"></div>
-    </section>  
-    <section class="step chart-section" id="bar-chart-section" data-scroll-section>
-      <div class="chart-text">
-        <h2>Bar Chart</h2>
-        <p>Explanation and additional info about the Bar Chart...</p>
-      </div>
-      <div class="chart" id="bar-chart"></div>
+        <div class="chart-text">
+            <h2>Scatterplot</h2>
+            <p>How does your weight affect your heart attack risk? This scatterplot shows the relationship between BMI (Body Mass Index) and heart attack risk. Each dot represents a data point, highlighting that higher BMI often correlates with higher risk. Maintaining a healthy weight is key!</p>
+        </div>
+        <div class="chart" id="scatterplot"></div>
     </section>
-    <section class="step chart-section" id="area-chart-section" data-scroll-section>
-      <div class="chart-text">
-        <h2>Area Chart</h2>
-        <p>Explanation and additional info about the Area Chart...</p>
-      </div>
-      <div class="chart" id="area-chart"></div>
+    <section class="step chart-section" id="radar-chart-section" data-scroll-section>
+        <div class="chart-text">
+            <h2>Radar Chart</h2>
+            <p>Ever wondered how your lifestyle choices impact your heart health? This radar chart compares average values for lifestyle factors like smoking, alcohol consumption, and exercise hours per week. It's clear that higher smoking and alcohol consumption increase heart attack risk, while more exercise helps reduce it.</p>
+        </div>
+        <div class="chart" id="radar-chart"></div>
     </section>
     <section class="step chart-section" id="calculator-section" data-scroll-section>
-      <div class="chart-text">
-          <h2>Heart Attack Risk Calculator</h2>
-          <p>Enter your details below to calculate your heart attack risk:</p>
-          <div class="form-container">
+        <div class="chart-text">
+            <h2>Heart Attack Risk Calculator</h2>
+            <p>Enter your details below to calculate your heart attack risk:</p>
             <form id="risk-calculator">
-                <div class="form-group">
-                    <label for="age">Age:</label>
-                    <input type="number" id="age" name="age" required placeholder="Years">
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" required placeholder="Years">
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Sex:</label>
+                        <select id="sex" name="sex" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bmi-category">BMI Category:</label>
+                        <select id="bmi-category" name="bmi-category" required>
+                            <option value="0">Underweight</option>
+                            <option value="1">Normal</option>
+                            <option value="2">Overweight</option>
+                            <option value="3">Obese</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="family-history">Family History of Heart Problems:</label>
+                        <select id="family-history" name="family-history" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="previous-heart-problems">Previous Heart Problems:</label>
+                        <select id="previous-heart-problems" name="previous-heart-problems" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="medication-use">Medication Use:</label>
+                        <select id="medication-use" name="medication-use" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="smoking">Smoking:</label>
+                        <select id="smoking" name="smoking" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="alcohol-consumption">Alcohol Consumption:</label>
+                        <select id="alcohol-consumption" name="alcohol-consumption" required>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="diet">Diet:</label>
+                        <select id="diet" name="diet" required>
+                            <option value="0">Poor</option>
+                            <option value="1">Average</option>
+                            <option value="2">Good</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exercise-hours">Exercise Hours Per Week:</label>
+                        <input type="number" id="exercise-hours" name="exercise-hours" required placeholder="Hours">
+                    </div>
+                    <div class="form-group">
+                        <label for="physical-activity-days">Physical Activity Days Per Week:</label>
+                        <input type="number" id="physical-activity-days" name="physical-activity-days" required placeholder="Days">
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep-hours">Sleep Hours Per Day:</label>
+                        <input type="number" id="sleep-hours" name="sleep-hours" required placeholder="Hours">
+                    </div>
+                    <div class="form-group">
+                        <label for="stress-level">Stress Level:</label>
+                        <select id="stress-level" name="stress-level" required>
+                            <option value="0">Low</option>
+                            <option value="1">Moderate</option>
+                            <option value="2">High</option>
+                        </select>
+                    </div>
+                    <button type="submit">Calculate Risk</button>
                 </div>
-                <div class="form-group">
-                    <label for="sex">Sex:</label>
-                    <select id="sex" name="sex" required>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="bmi-category">BMI Category:</label>
-                    <select id="bmi-category" name="bmi-category" required>
-                        <option value="0">Underweight</option>
-                        <option value="1">Normal</option>
-                        <option value="2">Overweight</option>
-                        <option value="3">Obese</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="family-history">Family History of Heart Problems:</label>
-                    <select id="family-history" name="family-history" required>
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="previous-heart-problems">Previous Heart Problems:</label>
-                    <select id="previous-heart-problems" name="previous-heart-problems" required>
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="medication-use">Medication Use:</label>
-                    <select id="medication-use" name="medication-use" required>
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="smoking">Smoking:</label>
-                    <select id="smoking" name="smoking" required>
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="alcohol-consumption">Alcohol Consumption:</label>
-                    <input type="number" id="alcohol-consumption" name="alcohol-consumption" required placeholder="Units per week">
-                </div>
-                <div class="form-group">
-                    <label for="diet">Diet:</label>
-                    <select id="diet" name="diet" required>
-                        <option value="0">Poor</option>
-                        <option value="1">Average</option>
-                        <option value="2">Good</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exercise-hours">Exercise Hours Per Week:</label>
-                    <input type="number" id="exercise-hours" name="exercise-hours" required placeholder="Hours">
-                </div>
-                <div class="form-group">
-                    <label for="physical-activity-days">Physical Activity Days Per Week:</label>
-                    <input type="number" id="physical-activity-days" name="physical-activity-days" required placeholder="Days">
-                </div>
-                <div class="form-group">
-                    <label for="sleep-hours">Sleep Hours Per Day:</label>
-                    <input type="number" id="sleep-hours" name="sleep-hours" required placeholder="Hours">
-                </div>
-                <div class="form-group">
-                    <label for="stress-level">Stress Level:</label>
-                    <select id="stress-level" name="stress-level" required>
-                        <option value="0">Low</option>
-                        <option value="1">Moderate</option>
-                        <option value="2">High</option>
-                    </select>
-                </div>
-                <button type="submit">Calculate Risk</button>
             </form>
-          </div>
-          <div id="risk-result"></div>
-      </div>
+            <div id="risk-result-section" class="step" data-scroll-section>
+                <h2>Your Heart Attack Risk</h2>
+                <p id="risk-result">Fill out the form above to calculate your risk!</p>
+                <p id="risk-tips"></p>
+            </div>
+        </div>
     </section>    
     <section class="step" id="preventative-measures" data-scroll-section>
         <h2>Preventative Measures</h2>
-        <p>Discussion on how lifestyle changes and medical interventions can reduce the risk of heart attacks.</p>
-        <!-- Additional content or visualizations -->
+        <div class="measures-container">
+            <div class="measure">
+                <img src="diet.svg" alt="Heart-Healthy Diet Icon" class="measure-icon">
+                <h3>Eat a Heart-Healthy Diet</h3>
+                <p>Load up on fruits, veggies, whole grains, and lean proteins. Cut back on saturated fats, trans fats, and cholesterol.</p>
+            </div>
+            <div class="measure">
+                <img src="exercise.svg" alt="Exercise Regularly Icon" class="measure-icon">
+                <h3>Exercise Regularly</h3>
+                <p>Aim for at least 150 minutes of moderate exercise each week. It helps keep your weight, blood pressure, and cholesterol in check.</p>
+            </div>
+            <div class="measure">
+                <img src="smoking.svg" alt="Quit Smoking Icon" class="measure-icon">
+                <h3>Quit Smoking</h3>
+                <p>Smoking is a major risk factor for heart disease. Quitting can significantly improve your heart health.</p>
+            </div>
+            <div class="measure">
+                <img src="alcohol.svg" alt="Limit Alcohol Icon" class="measure-icon">
+                <h3>Limit Alcohol</h3>
+                <p>Too much alcohol can raise your blood pressure and contribute to heart disease. Drink in moderation.</p>
+            </div>
+            <div class="measure">
+                <img src="medication.svg" alt="Medications Icon" class="measure-icon">
+                <h3>Medications</h3>
+                <p>If you're at high risk, your doctor may prescribe medications to manage blood pressure, cholesterol, and diabetes.</p>
+            </div>
+            <div class="measure">
+                <img src="checkup.svg" alt="Regular Check-ups Icon" class="measure-icon">
+                <h3>Regular Check-ups</h3>
+                <p>Regular screenings and check-ups can catch early signs of heart disease and allow for timely intervention.</p>
+            </div>
+            <div class="measure">
+                <img src="stress.svg" alt="Manage Stress Icon" class="measure-icon">
+                <h3>Manage Stress</h3>
+                <p>Chronic stress can contribute to heart disease. Try mindfulness, yoga, or relaxation techniques to manage stress levels.</p>
+            </div>
+        </div>
     </section>
+    
     <section class="step" id="conclusion" data-scroll-section>
         <h2>Conclusion and Next Steps</h2>
-        <p>Summarizing the insights and encouraging further learning and proactive health measures.</p>
-    </section>
+        <p>Throughout this journey, we've uncovered various factors that influence heart attack risk. We've seen how age, BMI, lifestyle choices, and geographic location all play a part.</p>
+        <p>Remember, maintaining a healthy lifestyle, staying informed about your health, and seeking regular medical advice are crucial.</p>
+        <p>Continue learning about heart health, stay updated with the latest research, and participate in health programs. Share this knowledge with your friends and family to promote heart health awareness.</p>
+        <p>Take charge of your heart health by implementing the preventative measures we've discussed. Make lifestyle changes, follow medical advice, and prioritize your well-being.</p>
+        <p>Use the heart attack risk calculator on this website to monitor your risk and take action accordingly.</p>
+    </section>    
+    
     <footer>
         <p>Project by Elias Antony & Christoph Schrenk | © 2024</p>
     </footer>

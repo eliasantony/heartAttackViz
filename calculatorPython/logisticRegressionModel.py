@@ -4,22 +4,26 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.impute import SimpleImputer
 import joblib
+from sklearn.preprocessing import StandardScaler
 
 # Load dataset
-data = pd.read_csv('data\heart_attack_prediction_dataset.csv')
+data = pd.read_csv('./data/heart_attack_prediction_dataset.csv')
 
-# Preprocess the data (this is a simplified example, adjust as needed)
 # Map categorical variables to numeric
 data['Sex'] = data['Sex'].map({'Male': 1, 'Female': 0})
-data['Family History'] = data['Family History'].map({'Yes': 1, 'No': 0})
-data['Previous Heart Problems'] = data['Previous Heart Problems'].map({'Yes': 1, 'No': 0})
-data['Medication Use'] = data['Medication Use'].map({'Yes': 1, 'No': 0})
-data['Smoking'] = data['Smoking'].map({'Yes': 1, 'No': 0})
-data['Diet'] = data['Diet'].map({'Poor': 0, 'Average': 1, 'Good': 2})
-data['Stress Level'] = data['Stress Level'].map({'Low': 0, 'Moderate': 1, 'High': 2})
-
-# Convert BMI Category to numeric
+data['Cholesterol Risk'] = data['Cholesterol Risk'].map({'Desirable': 0, 'Borderline': 1, 'High': 2})
+data['Blood Pressure Risk'] = data['Blood Pressure Risk'].map({'Normal': 0, 'Elevated': 1, 'Hypertension': 2})
 data['BMI Category'] = data['BMI Category'].map({'Underweight': 0, 'Normal': 1, 'Overweight': 2, 'Obese': 3})
+data['Diet'] = data['Diet'].map({'Unhealthy': 0, 'Average': 1, 'Healthy': 2})
+def categorize_stress_level(value):
+    if value <= 3:
+        return 'Low'
+    elif 4 <= value <= 7:
+        return 'Moderate'
+    else:
+        return 'High'
+
+data['Stress Level Category'] = data['Stress Level'].apply(categorize_stress_level)
 
 # Define features and target
 features = [
@@ -34,6 +38,10 @@ y = data['Heart Attack Risk']
 imputer = SimpleImputer(strategy='mean')
 X = imputer.fit_transform(X)
 
+# Scale features
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+
 # Split data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -45,5 +53,6 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
 
-# Save the model
-joblib.dump(model, 'heart_attack_risk_model.pkl')
+# Save the model and scaler
+joblib.dump(model, 'calculatorPython/heart_attack_risk_model.pkl')
+joblib.dump(scaler, 'calculatorPython/scaler.pkl')

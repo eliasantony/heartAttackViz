@@ -1,17 +1,15 @@
 import * as d3 from 'd3';
-import './style.css';
+import scrollama from 'scrollama';
 import Globe from './visualizations/globe.js';
 import LineChart from './visualizations/linechart.js';
 import Scatterplot from './visualizations/scatterplot.js';
 import RadarChart from './visualizations/radarchart.js';
 import BarChart from './visualizations/barchart.js';
-import AreaChart from './visualizations/areachart.js';
 
-const geoJsonUrl = './data/world.geo.json';
 const heartAttackDataUrl = './data/heart_attack_prediction_dataset.csv';
 
 async function loadData() {
-    const heartAttackData = await d3.csv('./data/heart_attack_prediction_dataset.csv', (row) => {
+    const heartAttackData = await d3.csv(heartAttackDataUrl, (row) => {
         return {
             patientId: row['Patient ID'],
             age : +row['Age'],
@@ -47,21 +45,21 @@ async function loadData() {
         }
     });
 
-    let globe = new Globe(heartAttackData, {
+    new Globe(heartAttackData, {
         parentElement: '#map',
         width: 800,
         height: 500,
-        geoJsonUrl,
+        geoJsonUrl: './data/world.geo.json',
         sensitivity: 75
     });
 
-    let lineChart = new LineChart(heartAttackData, {
+    new LineChart(heartAttackData, {
         parentElement: '#line-chart',
         width: 700,
         height: 500
     });
 
-    let scatterPlot = new Scatterplot(heartAttackData, {
+    new Scatterplot(heartAttackData, {
         parentElement: '#scatterplot',
         width: 600,
         height: 400,
@@ -84,7 +82,9 @@ async function loadData() {
         ]
     ];
 
-    let radarChart = new RadarChart(radarData, {
+    console.log(radarData);
+
+    new RadarChart(radarData, {
         parentElement: '#radar-chart',
         width: 600,
         height: 600,
@@ -92,21 +92,11 @@ async function loadData() {
         levels: 5
     });
 
-    let barChart = new BarChart(heartAttackData, {
+    new BarChart(heartAttackData, {
         parentElement: '#bar-chart',
         width: 600,
         height: 400
     });
-
-    let areaChart = new AreaChart(heartAttackData, {
-        parentElement: '#area-chart',
-        width: 600,
-        height: 400
-    });
-}
-
-function easeOutQuint(t) {
-    return 1 + (--t) * t * t * t * t;
 }
 
 // Function to animate counter
@@ -131,12 +121,151 @@ function animateCounter(id, start, end, duration) {
     }, stepTime);
 }
 
+// Ease out quint function for smooth animation
+function easeOutQuint(t) {
+    return 1 + (--t) * t * t * t * t;
+}
+
 // Trigger counter animation when the page loads
 document.addEventListener('DOMContentLoaded', function () {
     animateCounter('heart-attack-count', 0, 18000000, 5000);  // 5-second total duration
+    loadData();
 });
 
-loadData();
+// Initialize Scrollama
+const scroller = scrollama();
+
+function handleStepEnter(response) {
+    const { index } = response;
+
+    // Add color to the current step only
+    document.querySelectorAll('.step').forEach((step, i) => {
+        step.classList.toggle('is-active', i === index);
+    });
+    switch (index) {
+        case 0:
+            break;
+        case 1:
+            updateGlobe();
+            break;
+        case 2:
+            updateBarChart();
+            break;
+        case 3:
+            updateLineChart();
+            break;
+        case 4:
+            updateScatterPlot();
+            break;
+        case 5:
+            updateRadarChart();
+            break;
+        default:
+            break;
+    }
+}
+
+// Handle window resize events
+function handleResize() {
+    scroller.resize();
+}
+
+// Initialize Scrollama and set up event handlers
+function init() {
+    // Force a resize on load to ensure proper dimensions are sent to Scrollama
+    handleResize();
+
+    // Setup the scroller with options
+    scroller
+        .setup({
+            step: '.step',
+            offset: 0.5,
+            debug: false,
+        })
+        .onStepEnter(handleStepEnter);
+
+    // Setup resize event listener
+    window.addEventListener('resize', handleResize);
+}
+
+// Kick things off
+init();
+
+// Functions to update visualizations
+function updateGlobe() {
+    d3.select("#map svg")
+        .transition()
+        .duration(1000)
+        .style("opacity", 1);
+}
+
+function updateLineChart() {
+    d3.select("#line-chart svg")
+        .transition()
+        .duration(1000)
+        .style("opacity", 1)
+        .attr("transform", "translate(0,0)");
+
+    d3.select("#scatterplot svg").transition().duration(500).style("opacity", 0);
+    d3.select("#radar-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#bar-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#area-chart svg").transition().duration(500).style("opacity", 0);
+}
+
+function updateScatterPlot() {
+    d3.select("#scatterplot svg")
+        .transition()
+        .duration(1000)
+        .style("opacity", 1)
+        .attr("transform", "translate(0,0)");
+
+    d3.select("#line-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#radar-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#bar-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#area-chart svg").transition().duration(500).style("opacity", 0);
+}
+
+function updateRadarChart() {
+    d3.select("#radar-chart svg")
+        .transition()
+        .duration(1000)
+        .style("opacity", 1)
+        .attr("transform", "translate(0,0)");
+
+    d3.select("#line-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#scatterplot svg").transition().duration(500).style("opacity", 0);
+    d3.select("#bar-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#area-chart svg").transition().duration(500).style("opacity", 0);
+}
+
+function updateBarChart() {
+    d3.select("#bar-chart svg")
+        .transition()
+        .duration(1000)
+        .style("opacity", 1)
+        .attr("transform", "translate(0,0)");
+
+    d3.select("#line-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#scatterplot svg").transition().duration(500).style("opacity", 0);
+    d3.select("#radar-chart svg").transition().duration(500).style("opacity", 0);
+    d3.select("#area-chart svg").transition().duration(500).style("opacity", 0);
+}
+
+function displayRiskResult(risk) {
+    const riskResultSection = document.getElementById('risk-result-section');
+    const riskResult = document.getElementById('risk-result');
+    const riskTips = document.getElementById('risk-tips');
+
+    riskResult.innerHTML = `Your calculated heart attack risk is: ${risk.toFixed(2)}%`;
+    riskTips.innerHTML = getRiskTips(risk);
+
+    riskResultSection.classList.add('active');
+
+    // Add a small delay to ensure the section is fully visible before scrolling
+    setTimeout(() => {
+        riskResultSection.scrollIntoView({ behavior: 'smooth' });
+    }, 100); // Adjust the delay as needed
+}
 
 document.getElementById('risk-calculator').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -161,21 +290,47 @@ document.getElementById('risk-calculator').addEventListener('submit', function(e
         exerciseHours, physicalActivityDays, sleepHours, stressLevel
     ];
 
+    console.log("Features: ", features);
+
     const risk = calculateRisk(features);
-    document.getElementById('risk-result').innerHTML = `Your calculated heart attack risk is: ${risk.toFixed(2)}%`;
+    displayRiskResult(risk);
 });
 
 function calculateRisk(features) {
-    const intercept = -0.2934952133448852;
-    const coefficients = [0.00087462, 0.01228377, 0.02421722, -0.04128231, -0.29221089, 0.00523712, -0.00373356, -0.01695023];
+    const intercept = -0.583946095042942;
+    const coefficients = [0.03367072, 0.02501753, 0.02284409, -0.01530351, -0.01030686, 0.00458841, -0.03707373, -0.02011293, -0.01381499, 0.03007136, -0.00820121, -0.03451076, -0.02688026];
 
+    // Normalization values
+    const means = [53.70797672, 0.69736392, 2.10578569, 0.49298186, 0.49583476, 0.49834532, 0.89683898, 0.59808285, 1.00787402, 10.01428392, 3.48967249, 7.02350793, 5.46970216];
+    const stds = [21.24829631, 0.45939905, 0.90738136, 0.49995074, 0.49998265, 0.49999726, 0.30416907, 0.49028538, 0.81708733, 5.78341767, 2.28255707, 1.98835929, 2.85945872];
+
+    // Normalize features
+    let normalizedFeatures = features.map((value, index) => (value - means[index]) / stds[index]);
+
+    console.log("Normalized Features: ", normalizedFeatures);
+
+    // Calculate score
     let score = intercept;
-
-    for (let i = 0; i < features.length; i++) {
-        score += coefficients[i] * features[i];
+    for (let i = 0; i < normalizedFeatures.length; i++) {
+        score += coefficients[i] * normalizedFeatures[i];
     }
 
+    console.log("Score: " + score);
+    console.log("Math.exp(-score): " + Math.exp(-score));
+    console.log("Risk: " + (1 / (1 + Math.exp(-score))) * 100);
+
+    // Calculate risk using sigmoid function
     const risk = 1 / (1 + Math.exp(-score));
+    console.log("Final Risk: ", risk);
     return risk * 100; // Convert to percentage
 }
 
+function getRiskTips(risk) {
+    if (risk < 20) {
+        return "Your heart attack risk is low. Keep up with your healthy lifestyle!";
+    } else if (risk < 50) {
+        return "Your heart attack risk is moderate. Consider making lifestyle changes like improving your diet and increasing physical activity.";
+    } else {
+        return "Your heart attack risk is high. Please consult with a healthcare provider for personalized advice.";
+    }
+}

@@ -5,7 +5,7 @@ export default class BarChart {
         this.data = data;
         this.config = {
             parentElement: config?.parentElement || 'body',
-            colorScale: config?.colorScale || d3.scaleOrdinal(d3.schemeCategory10),
+            colorScale: config?.colorScale || d3.scaleSequential(d3.interpolateReds),
             width: config?.width || 500,
             height: config?.height || 500,
             margin: config?.margin || { top: 20, right: 20, bottom: 30, left: 40 },
@@ -23,11 +23,12 @@ export default class BarChart {
         that.aggregatedData = Array.from(ageGroups, ([ageCategory, values]) => ({
             ageCategory: ageCategory,
             count: values.length,
-            averageHeartAttackRisk: d3.mean(values, v => v.heartAttackRisk) // Aggregate by average heart attack risk
+            averageHeartAttackRisk: d3.mean(values, v => v.heartAttackRisk) * 100// Aggregate by average heart attack risk
         }));
 
         // Sort data by age category
-        that.aggregatedData.sort((a, b) => a.ageCategory - b.ageCategory);
+        const ageOrder = ["18-30", "31-45", "46-60", "61+"]; // Define the order of age categories
+        that.aggregatedData.sort((a, b) => ageOrder.indexOf(a.ageCategory) - ageOrder.indexOf(b.ageCategory));
     }
 
     initViz() {
@@ -48,7 +49,8 @@ export default class BarChart {
         that.svg = d3.select(that.config.parentElement)
             .append('svg')
             .attr('width', that.config.width)
-            .attr('height', that.config.height);
+            .attr('height', that.config.height)
+            .style("opacity", 0);
 
         that.viz = that.svg.append('g')
             .attr('transform', `translate(${that.config.margin.left}, ${that.config.margin.top})`);
@@ -74,6 +76,9 @@ export default class BarChart {
         that.xScale.domain(that.aggregatedData.map(d => d.ageCategory));
         that.yScale.domain([0, d3.max(that.aggregatedData, d => d.averageHeartAttackRisk)]);
 
+        // Set the color scale domain
+        that.config.colorScale.domain([0, d3.max(that.aggregatedData, d => d.averageHeartAttackRisk)]);
+
         // Render the visualization
         that.renderViz();
     }
@@ -90,18 +95,18 @@ export default class BarChart {
             .attr('y', d => that.yScale(d.averageHeartAttackRisk))
             .attr('width', that.xScale.bandwidth())
             .attr('height', d => that.boundedHeight - that.yScale(d.averageHeartAttackRisk))
-            .attr('fill', that.config.colorScale);
+            .attr('fill', d => that.config.colorScale(d.averageHeartAttackRisk));
 
         // Axes
         that.xAxisGroup.call(d3.axisBottom(that.xScale));
-        that.yAxisGroup.call(d3.axisLeft(that.yScale));
+        that.yAxisGroup.call(d3.axisLeft(that.yScale).tickFormat(d => `${d}%`));
 
         // Add tooltips
         bars.on('mouseover', (event, d) => {
             that.tooltip.transition()
                 .duration(200)
                 .style('opacity', 0.9);
-            that.tooltip.html(`Age Category: ${d.ageCategory}<br>Avg. Heart Attack Risk: ${d.averageHeartAttackRisk.toFixed(2)}%`)
+            that.tooltip.html(`Age Category: ${d.ageCategory}<br>Avg. Heart Attack Risk: ${d.averageHeartAttackRisk.toFixed(2)}% <br> Count: ${d.count}`)
                 .style('left', `${event.pageX + that.config.tooltipPadding}px`)
                 .style('top', `${event.pageY - that.config.tooltipPadding}px`);
         }).on('mouseleave', () => {
