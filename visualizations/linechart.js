@@ -6,8 +6,8 @@ export default class LineChart {
         this.config = {
             parentElement: config?.parentElement || 'body',
             width: config?.width || 600,
-            height: config?.height || 400,
-            margin: config?.margin || { top: 10, right: 30, bottom: 30, left: 60 },
+            height: config?.height || 500,
+            margin: config?.margin || { top: 10, right: 30, bottom: 60, left: 60 },
             tooltipPadding: config?.tooltipPadding || 15
         };
         this.prepareData();

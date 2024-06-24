@@ -6,7 +6,7 @@ export default class Scatterplot {
         this.config = {
             parentElement: config?.parentElement || 'body',
             colorScale: config?.colorScale || d3.scaleOrdinal(d3.schemeCategory10),
-            width: config?.width || 500,
+            width: config?.width || 600,
             height: config?.height || 500,
             margin: config?.margin || { top: 25, right: 25, bottom: 60, left: 60 },
             tooltipPadding: config?.tooltipPadding || 15,

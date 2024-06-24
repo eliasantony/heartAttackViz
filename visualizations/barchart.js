@@ -6,9 +6,9 @@ export default class BarChart {
         this.config = {
             parentElement: config?.parentElement || 'body',
             colorScale: config?.colorScale || d3.scaleSequential(d3.interpolateReds),
-            width: config?.width || 500,
+            width: config?.width || 600,
             height: config?.height || 500,
-            margin: config?.margin || { top: 20, right: 20, bottom: 30, left: 40 },
+            margin: config?.margin || { top: 20, right: 20, bottom: 50, left: 50 },
             tooltipPadding: config?.tooltipPadding || 15
         };
         this.prepareData();
@@ -23,7 +23,7 @@ export default class BarChart {
         that.aggregatedData = Array.from(ageGroups, ([ageCategory, values]) => ({
             ageCategory: ageCategory,
             count: values.length,
-            averageHeartAttackRisk: d3.mean(values, v => v.heartAttackRisk) * 100// Aggregate by average heart attack risk
+            averageHeartAttackRisk: d3.mean(values, v => v.heartAttackRisk) * 100 // Aggregate by average heart attack risk
         }));
 
         // Sort data by age category
@@ -101,12 +101,30 @@ export default class BarChart {
         that.xAxisGroup.call(d3.axisBottom(that.xScale));
         that.yAxisGroup.call(d3.axisLeft(that.yScale).tickFormat(d => `${d}%`));
 
+        // X-axis Label
+        that.svg.append('text')
+            .attr('class', 'axis-label')
+            .attr('x', that.config.width / 2)
+            .attr('y', that.config.height - 10) // Adjust based on your layout
+            .style('text-anchor', 'middle')
+            .text('Age Category');
+
+        // Y-axis Label
+        that.svg.append('text')
+            .attr('class', 'axis-label')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 30) // Adjust based on your layout
+            .attr('x', -that.config.height / 2 )
+            .attr('dy', '-1em')
+            .style('text-anchor', 'middle')
+            .text('Average Heart Attack Risk (%)');
+
         // Add tooltips
         bars.on('mouseover', (event, d) => {
             that.tooltip.transition()
                 .duration(200)
                 .style('opacity', 0.9);
-            that.tooltip.html(`Age Category: ${d.ageCategory}<br>Avg. Heart Attack Risk: ${d.averageHeartAttackRisk.toFixed(2)}% <br> Count: ${d.count}`)
+            that.tooltip.html(`Age Category: ${d.ageCategory}<br>Avg. Heart Attack Risk: ${d.averageHeartAttackRisk.toFixed(2)}%<br>Count: ${d.count}`)
                 .style('left', `${event.pageX + that.config.tooltipPadding}px`)
                 .style('top', `${event.pageY - that.config.tooltipPadding}px`);
         }).on('mouseleave', () => {

@@ -55,14 +55,14 @@ async function loadData() {
 
     new LineChart(heartAttackData, {
         parentElement: '#line-chart',
-        width: 700,
+        width: 800,
         height: 500
     });
 
     new Scatterplot(heartAttackData, {
         parentElement: '#scatterplot',
-        width: 600,
-        height: 400,
+        width: 800,
+        height: 500,
         dataAccessor: {
             x: 'bmi',
             y: 'heartAttackRisk'
@@ -94,8 +94,8 @@ async function loadData() {
 
     new BarChart(heartAttackData, {
         parentElement: '#bar-chart',
-        width: 600,
-        height: 400
+        width: 800,
+        height: 500
     });
 }
 
